@@ -1,0 +1,14 @@
+server:
+  port: 8888 # 8888 is the standard default port for a Config Server
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          # Replace this path with the actual absolute path to your git repository folder
+          # Example for Windows: file:///C:/Users/YourName/Documents/agms-config-repo
+          # Example for Mac/Linux: file://${user.home}/Documents/agms-config-repo
+          uri: https://github.com/Prabhashperera/AGHM-Config-Repo.git
