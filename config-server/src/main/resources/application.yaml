@@ -12,3 +12,4 @@ spring:
           # Example for Windows: file:///C:/Users/YourName/Documents/agms-config-repo
           # Example for Mac/Linux: file://${user.home}/Documents/agms-config-repo
           uri: https://github.com/Prabhashperera/AGHM-Config-Repo.git
+          default-label: main
