@@ -23,4 +23,9 @@ public class ZoneController {
     public ResponseEntity<List<Zone>> getAllZones() {
         return ResponseEntity.ok(zoneService.getAllZones());
     }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Zone> getZoneByName(@PathVariable String name) {
+        return ResponseEntity.ok(zoneService.getZoneByName(name));
+    }
 }

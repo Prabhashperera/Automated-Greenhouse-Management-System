@@ -48,4 +48,11 @@ public class ZoneService {
     public List<Zone> getAllZones() {
         return zoneRepo.findAll();
     }
+
+    public Zone getZoneByName(String name) {
+        return zoneRepo.findAll().stream()
+                .filter(z -> z.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Zone not found: " + name));
+    }
 }

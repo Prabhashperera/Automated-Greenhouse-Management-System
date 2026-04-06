@@ -16,26 +16,26 @@ public class AutomationService {
     }
 
     public void processData(SensorDataDTO data) {
-        // 1. Fetch thresholds from Zone Service for this specific zone
-        // Business Logic: Threshold Fetching [cite: 144]
-        ZoneDTO zone = zoneClient.getZoneByName(data.getZoneId());
+        try {
+            // Fetch thresholds
+            ZoneDTO zone = zoneClient.getZoneByName(data.getZoneId());
 
-        if (zone == null) {
-            log.warn("No threshold data found for zone: {}", data.getZoneId());
-            return;
-        }
+            if (zone == null) {
+                System.err.println("Skipping: No zone found with name " + data.getZoneId());
+                return; // Stop here instead of crashing
+            }
 
-        double currentTemp = data.getValue().getTemperature();
+            double currentTemp = data.getValue().getTemperature();
 
-        // 2. Execute Rules [cite: 145-146]
-        if (currentTemp > zone.getMaxTemp()) {
-            log.info("!!! ACTION REQUIRED in {}: Current Temp {}°C > Max {}°C. TURN_FAN_ON",
-                    zone.getName(), currentTemp, zone.getMaxTemp());
-        } else if (currentTemp < zone.getMinTemp()) {
-            log.info("!!! ACTION REQUIRED in {}: Current Temp {}°C < Min {}°C. TURN_HEATER_ON",
-                    zone.getName(), currentTemp, zone.getMinTemp());
-        } else {
-            log.info("Environment in {} is optimal ({}°C)", zone.getName(), currentTemp);
+            // Execute Rules
+            if (currentTemp > zone.getMaxTemp()) {
+                System.out.println("!!! ALERT: TURN_FAN_ON in " + zone.getName());
+            } else if (currentTemp < zone.getMinTemp()) {
+                System.out.println("!!! ALERT: TURN_HEATER_ON in " + zone.getName());
+            }
+        } catch (Exception e) {
+            System.err.println("Automation Logic Error: " + e.getMessage());
+            // This prevents the 500 error from propagating back to Telemetry
         }
     }
 }
