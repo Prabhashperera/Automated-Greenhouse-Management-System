@@ -11,13 +11,14 @@
         <module name="config-server" />
         <module name="service-registry" />
       </profile>
-      <profile name="Annotation profile for zone-management-service" enabled="true">
+      <profile name="Annotation profile for telemetry-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
         </processorPath>
+        <module name="telemetry-service" />
         <module name="zone-management-service" />
       </profile>
     </annotationProcessing>
@@ -27,6 +28,7 @@
       <module name="api-gateway" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="service-registry" options="-parameters" />
+      <module name="telemetry-service" options="-parameters" />
       <module name="zone-management-service" options="-parameters" />
     </option>
   </component>
