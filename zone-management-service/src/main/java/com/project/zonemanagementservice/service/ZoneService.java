@@ -18,7 +18,7 @@ public class ZoneService {
     private final ExternalIotClient externalIotClient;
 
     public Zone createZone(Zone zone) {
-        if (zone.getMinTempo() >= zone.getMaxTempo()) {
+        if (zone.getMinTemp() >= zone.getMaxTemp()) {
             throw new RuntimeException("Validation Failed: Minimum temperature must be less than Maximum temperature.");
         }
         //Prepare the data Packet

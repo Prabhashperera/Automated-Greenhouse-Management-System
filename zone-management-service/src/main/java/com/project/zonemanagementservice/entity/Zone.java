@@ -16,8 +16,8 @@ public class Zone {
     private Long id;
     // e.g., "Tomato Zone" [cite: 28]
     private String name;
-    private Double minTempo;
-    private Double maxTempo;
+    private Double minTemp;
+    private Double maxTemp;
     // This stores the ID returned from the External IoT API after registration [cite: 124]
     private String deviceId;
 }
