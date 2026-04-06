@@ -1,7 +1,7 @@
 package com.project.telemetryservice.client;
 
+import com.project.telemetryservice.config.FeignAuthConfiguration;
 import com.project.telemetryservice.dto.SensorDataDTO;
-import com.project.zonemanagementservice.config.FeignAuthConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

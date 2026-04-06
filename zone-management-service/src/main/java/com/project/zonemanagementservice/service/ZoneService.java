@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -41,5 +42,10 @@ public class ZoneService {
         }
 
         return zoneRepo.save(zone);
+    }
+
+    // Inside ZoneService.java (8081)
+    public List<Zone> getAllZones() {
+        return zoneRepo.findAll();
     }
 }
