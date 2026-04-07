@@ -18,28 +18,26 @@ function App() {
     fetchZones();
   }, []);
 
+  // Add 'history' to your state at the top
+
 useEffect(() => {
   const fetchLiveData = async () => {
     try {
-      // 1. Fetch Live Telemetry
+      // 1. Fetch Telemetry (Existing)
       const telemetryRes = await axios.get('http://localhost:8080/telemetry-service/api/sensors/latest');
-      const latestReading = telemetryRes.data;
-
-      if (latestReading && latestReading.zoneId) {
-        setTelemetryData(prevData => ({
-          ...prevData,
-          [latestReading.zoneId]: latestReading
-        }));
+      if (telemetryRes.data?.zoneId) {
+        setTelemetryData(prev => ({ ...prev, [telemetryRes.data.zoneId]: telemetryRes.data }));
       }
 
-      // 2. Fetch Automation History
+      // 2. NEW: Fetch Automation History
       const historyRes = await axios.get('http://localhost:8080/automation-service/api/automation/history');
-      // Sort so the newest actions are at the top
-      const sortedHistory = historyRes.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-      setHistory(sortedHistory.slice(0, 10)); // Keep only the latest 10 rows for a clean UI
-
+      
+      // SORTING FIX: Sort by the 'timeStamps' field so newest is always at the top
+      const sorted = historyRes.data.sort((a, b) => new Date(b.timeStamps) - new Date(a.timeStamps));
+      setHistory(sorted.slice(0, 10)); // Keep only the latest 10
+      
     } catch (err) {
-      console.error("Error fetching live data:", err);
+      console.error("Polling error:", err);
     }
   };
 

@@ -1,0 +1,84 @@
+{
+  "info": {
+    "_postman_id": "agms-final-assignment-collection",
+    "name": "AGMS Microservices API",
+    "description": "API collection for Automated Greenhouse Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Zone Service",
+      "item": [
+        {
+          "name": "Create Zone",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Tomato-Zone\",\n    \"minTemp\": 18.0,\n    \"maxTemp\": 30.0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "http://localhost:8080/zone-service/api/zones" }
+          }
+        },
+        {
+          "name": "Get All Zones",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/zone-service/api/zones" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Telemetry Service",
+      "item": [
+        {
+          "name": "Get Latest Reading",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/telemetry-service/api/sensors/latest" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Automation Service",
+      "item": [
+        {
+          "name": "Get Automation History",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/automation-service/api/automation/history" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crop Service",
+      "item": [
+        {
+          "name": "Add Crop Batch",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"cropType\": \"Strawberry\",\n    \"quantity\": 150\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "http://localhost:8080/crop-service/api/crops" }
+          }
+        },
+        {
+          "name": "Get Crop Inventory",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:8080/crop-service/api/crops" }
+          }
+        }
+      ]
+    }
+  ]
+}
