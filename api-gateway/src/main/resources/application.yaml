@@ -6,32 +6,43 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:5173" # Allows your React App
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
       routes:
-        # Route for the Zone Service we are about to build
+        # Route for the Zone Service
         - id: zone-service
-          uri: lb://ZONE-SERVICE # Looks up 'ZONE-SERVICE' in Eureka
+          uri: lb://zone-service # Matches the spring.application.name of your zone service
           predicates:
-            - Path=/api/zones/**
+            - Path=/zone-service/** # Matches what React is calling
+          filters:
+            - StripPrefix=1 # Removes "/zone-service" before sending to port 8081
 
         # Route for the Sensor Service
         - id: sensor-service
-          uri: lb://SENSOR-SERVICE
+          uri: lb://telemetry-service
           predicates:
-            - Path=/api/sensors/**
+            - Path=/telemetry-service/**
+          filters:
+            - StripPrefix=1
 
         # Route for the Automation Service
         - id: automation-service
-          uri: lb://AUTOMATION-SERVICE
+          uri: lb://automation-service
           predicates:
-            - Path=/api/automation/**
-
-        # Route for the Crop Service
-        - id: crop-service
-          uri: lb://CROP-SERVICE
-          predicates:
-            - Path=/api/crops/**
+            - Path=/automation-service/**
+          filters:
+            - StripPrefix=1
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/ # Points to your Eureka Server
+      defaultZone: http://localhost:8761/eureka/
