@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Sprout, RefreshCw } from 'lucide-react';
 import ZoneCard from './components/ZoneCard';
 import HistoryTable from './components/HistoryTable';
+import CropInventory from './components/CropInventory';
+import AddCropForm from './components/AddCropForm';
 
 function App() {
   const [zones, setZones] = useState([]);
@@ -126,6 +128,9 @@ useEffect(() => {
         <HistoryTable history={history} />
       )}
       </main>
+
+      <CropInventory />
+      <AddCropForm />
       
     </div>
   );

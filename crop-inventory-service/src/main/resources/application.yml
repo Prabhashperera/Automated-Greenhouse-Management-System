@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: crop-inventory-service # This must perfectly match the name of the file in your GitHub repo!
+  config:
+    import: optional:configserver:http://localhost:8888 # Tells it where the Config Server is running
