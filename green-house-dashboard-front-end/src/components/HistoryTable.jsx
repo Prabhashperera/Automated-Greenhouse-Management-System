@@ -43,7 +43,7 @@ const HistoryTable = ({ history }) => {
                 return (
                   <tr key={log.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 text-sm text-gray-600 font-medium whitespace-nowrap">
-                      {formatDate(log.timestamp)}
+                      {formatDate(log.timeStamps)}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-800 font-bold whitespace-nowrap">
                       {log.zoneName}
