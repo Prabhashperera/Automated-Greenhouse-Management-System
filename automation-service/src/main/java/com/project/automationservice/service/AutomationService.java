@@ -3,13 +3,22 @@ package com.project.automationservice.service;
 import com.project.automationservice.client.ZoneClient;
 import com.project.automationservice.dto.SensorDataDTO;
 import com.project.automationservice.dto.ZoneDTO;
+import com.project.automationservice.entity.AutomationAction;
+import com.project.automationservice.repo.AutomationRepo;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @Slf4j
 public class AutomationService {
     private final ZoneClient zoneClient; // Client to talk to Port 8081
+    @Autowired
+    private AutomationRepo automationRepo;
 
     public AutomationService(ZoneClient zoneClient) {
         this.zoneClient = zoneClient;
@@ -19,19 +28,28 @@ public class AutomationService {
         try {
             // Fetch thresholds
             ZoneDTO zone = zoneClient.getZoneByName(data.getZoneId());
-
-            if (zone == null) {
-                System.err.println("Skipping: No zone found with name " + data.getZoneId());
-                return; // Stop here instead of crashing
-            }
+            if (zone == null) return;
 
             double currentTemp = data.getValue().getTemperature();
+            String actionTaken = null;
 
-            // Execute Rules
             if (currentTemp > zone.getMaxTemp()) {
-                System.out.println("!!! ALERT: TURN_FAN_ON in " + zone.getName());
+                actionTaken = "TURN_FAN_ON";
             } else if (currentTemp < zone.getMinTemp()) {
-                System.out.println("!!! ALERT: TURN_HEATER_ON in " + zone.getName());
+                actionTaken = "TURN_HEATER_ON";
+            }
+
+            if (actionTaken != null) {
+                // Save to Database
+                AutomationAction logEntry = AutomationAction.builder()
+                        .zoneName(zone.getName())
+                        .action(actionTaken)
+                        .capturedValue(currentTemp)
+                        .timeStamps(LocalDateTime.now())
+                        .build();
+
+                automationRepo.save(logEntry);
+                log.info("Saved Action: {} for Zone: {}", actionTaken, zone.getName());
             }
         } catch (Exception e) {
             System.err.println("Automation Logic Error: " + e.getMessage());
