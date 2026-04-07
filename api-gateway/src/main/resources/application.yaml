@@ -42,6 +42,14 @@ spring:
           filters:
             - StripPrefix=1
 
+        # Route for the Crop Inventory Service
+        - id: crop-service
+          uri: lb://crop-inventory-service
+          predicates:
+            - Path=/crop-service/**
+          filters:
+            - StripPrefix=1
+
 eureka:
   client:
     service-url:

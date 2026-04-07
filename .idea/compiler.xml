@@ -11,16 +11,17 @@
         <module name="config-server" />
         <module name="service-registry" />
       </profile>
-      <profile name="Annotation profile for automation-service" enabled="true">
+      <profile name="Annotation profile for crop-inventory-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
         </processorPath>
-        <module name="telemetry-service" />
+        <module name="crop-inventory-service" />
         <module name="zone-management-service" />
         <module name="automation-service" />
+        <module name="telemetry-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -29,6 +30,7 @@
       <module name="api-gateway" options="-parameters" />
       <module name="automation-service" options="-parameters" />
       <module name="config-server" options="-parameters" />
+      <module name="crop-inventory-service" options="-parameters" />
       <module name="service-registry" options="-parameters" />
       <module name="telemetry-service" options="-parameters" />
       <module name="zone-management-service" options="-parameters" />
