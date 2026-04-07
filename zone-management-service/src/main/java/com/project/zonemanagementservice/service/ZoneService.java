@@ -55,4 +55,11 @@ public class ZoneService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Zone not found: " + name));
     }
+    // Add this to your ZoneService.java
+    public Zone getZoneByDeviceId(String deviceId) {
+        return zoneRepo.findAll().stream()
+                .filter(z -> deviceId.equals(z.getDeviceId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Zone not found for Device ID: " + deviceId));
+    }
 }

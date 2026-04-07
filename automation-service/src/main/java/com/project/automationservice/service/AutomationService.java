@@ -26,8 +26,8 @@ public class AutomationService {
 
     public void processData(SensorDataDTO data) {
         try {
-            // Fetch thresholds
-            ZoneDTO zone = zoneClient.getZoneByName(data.getZoneId());
+            // Search by Device ID instead of Name
+            ZoneDTO zone = zoneClient.getZoneByDeviceId(data.getDeviceId());
             if (zone == null) return;
 
             double currentTemp = data.getValue().getTemperature();

@@ -2,45 +2,49 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Sprout, RefreshCw } from 'lucide-react';
 import ZoneCard from './components/ZoneCard';
+import HistoryTable from './components/HistoryTable';
 
 function App() {
   const [zones, setZones] = useState([]);
   const [telemetryData, setTelemetryData] = useState({}); // New state for live data
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [history, setHistory] = useState([]);
 
   // Fetch zones exactly once on load
   useEffect(() => {
     fetchZones();
   }, []);
 
-  // Poll for live telemetry every 5 seconds
-  useEffect(() => {
-    const fetchLiveTelemetry = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/telemetry-service/api/sensors/latest');
-        const latestReading = response.data;
-        
-        // Update the state map using the zoneId so the correct card gets the data
-        if (latestReading && latestReading.zoneId) {
-          setTelemetryData(prevData => ({
-            ...prevData,
-            [latestReading.zoneId]: latestReading
-          }));
-        }
-      } catch (err) {
-        console.error("Error fetching live telemetry:", err);
-        // We don't set a main error here so it doesn't break the UI if one request fails
-      }
-    };
+useEffect(() => {
+  const fetchLiveData = async () => {
+    try {
+      // 1. Fetch Live Telemetry
+      const telemetryRes = await axios.get('http://localhost:8080/telemetry-service/api/sensors/latest');
+      const latestReading = telemetryRes.data;
 
-    // Run immediately, then every 5 seconds
-    fetchLiveTelemetry();
-    const interval = setInterval(fetchLiveTelemetry, 5000);
-    
-    // Cleanup interval on unmount
-    return () => clearInterval(interval);
-  }, []);
+      if (latestReading && latestReading.zoneId) {
+        setTelemetryData(prevData => ({
+          ...prevData,
+          [latestReading.zoneId]: latestReading
+        }));
+      }
+
+      // 2. Fetch Automation History
+      const historyRes = await axios.get('http://localhost:8080/automation-service/api/automation/history');
+      // Sort so the newest actions are at the top
+      const sortedHistory = historyRes.data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      setHistory(sortedHistory.slice(0, 10)); // Keep only the latest 10 rows for a clean UI
+
+    } catch (err) {
+      console.error("Error fetching live data:", err);
+    }
+  };
+
+  fetchLiveData();
+  const interval = setInterval(fetchLiveData, 5000);
+  return () => clearInterval(interval);
+}, []);
 
   const fetchZones = async () => {
     setLoading(true);
@@ -116,7 +120,13 @@ function App() {
             ))}
           </div>
         )}
+
+      {/* Add the History Table right here! */}
+      {!loading && !error && (
+        <HistoryTable history={history} />
+      )}
       </main>
+      
     </div>
   );
 }

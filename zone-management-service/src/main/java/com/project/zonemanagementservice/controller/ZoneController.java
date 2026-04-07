@@ -28,4 +28,9 @@ public class ZoneController {
     public ResponseEntity<Zone> getZoneByName(@PathVariable String name) {
         return ResponseEntity.ok(zoneService.getZoneByName(name));
     }
+    // Add to your existing ZoneController
+    @GetMapping("/device/{deviceId}")
+    public ResponseEntity<Zone> getZoneByDeviceId(@PathVariable String deviceId) {
+        return ResponseEntity.ok(zoneService.getZoneByDeviceId(deviceId));
+    }
 }
